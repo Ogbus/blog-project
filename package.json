@@ -1,0 +1,23 @@
+{
+  "name": "blog-project",
+  "version": "1.0.0",
+  "description": "This project is all about creating a blog website using express for the server side  ejs for the views and MongoDB for the database.",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://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@github.com/Ogbus/blog-project.git"
+  },
+  "author": "Ogbus",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Ogbus/blog-project/issues"
+  },
+  "homepage": "https://github.com/Ogbus/blog-project#readme",
+  "dependencies": {
+    "ejs": "^3.1.8",
+    "express": "^4.18.1"
+  }
+}

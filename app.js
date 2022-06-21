@@ -6,7 +6,7 @@ const Blog = require('./models/blog');
 // express app
 const app = express();
 
-const dbURI = 'mongodb+srv://iromata:<password>@blog-totu.jkyxy.mongodb.net/blogs-totu?retryWrites=true&w=majority';
+const dbURI = 'mongodb+srv://iromata:pearl123@blog-totu.jkyxy.mongodb.net/blogs-totu?retryWrites=true&w=majority';
 mongoose.connect(dbURI, { useNewUrlParser: true, useUnifiedTopology: true })
 .then((result) => app.listen(3000))
 .catch((err) => console.log(err))
@@ -16,6 +16,7 @@ app.set('view engine', 'ejs');
 
 // Creating a static express middleware
 app.use(morgan('dev'));
+app.use(express.urlencoded({ extended: true }))   //this middleware is used for accepting form data
 app.use(express.static('public'));
 
 // listening for request
@@ -86,6 +87,20 @@ app.get('/blogs', (req, res) => {
     Blog.find().sort({createdAt: -1})
     .then((result) => {
         res.render('index', {title: 'All blogs', blogs: result})
+    })
+    .catch((err) => {
+        console.log(err);
+    })
+})
+
+// Creating a blog post route
+app.post('/blogs', (req, res) => {
+    //console.log(req.body)
+    const blog = new Blog(req.body)
+
+    blog.save()
+    .then((result) => {
+        res.redirect('/blogs');
     })
     .catch((err) => {
         console.log(err);

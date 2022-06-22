@@ -6,7 +6,7 @@ const Blog = require('./models/blog');
 // express app
 const app = express();
 
-const dbURI = 'mongodb+srv://iromata:pearl123@blog-totu.jkyxy.mongodb.net/blogs-totu?retryWrites=true&w=majority';
+const dbURI = 'mongodb+srv://iromata:<password>@blog-totu.jkyxy.mongodb.net/blogs-totu?retryWrites=true&w=majority';
 mongoose.connect(dbURI, { useNewUrlParser: true, useUnifiedTopology: true })
 .then((result) => app.listen(3000))
 .catch((err) => console.log(err))
@@ -75,9 +75,6 @@ app.get('/about', (req, res) => {
     res.render('about', {title: 'About'})
 });
 
-app.get('/blogs/create', (req, res) => {
-    res.render('create', {title: 'Create Blog'});
-})
 // redirecting a route
 // app.get('/about-us', (req, res) => {
 //     res.redirect('/about');
@@ -93,6 +90,10 @@ app.get('/blogs', (req, res) => {
     })
 })
 
+app.get('/blogs/create', (req, res) => {
+    res.render('create', {title: 'Create Blog'});
+})
+
 // Creating a blog post route
 app.post('/blogs', (req, res) => {
     //console.log(req.body)
@@ -103,6 +104,32 @@ app.post('/blogs', (req, res) => {
         res.redirect('/blogs');
     })
     .catch((err) => {
+        console.log(err);
+    })
+})
+
+// Routing through database id
+app.get('/blogs/:id', (req, res) => {
+    const id = req.params.id;
+    //console.log(id);
+    Blog.findById(id)
+    .then((result) => {
+        res.render('details', {blog: result, title: 'blog details'})
+    })
+    .catch((err) => {
+        console.log(err);
+    })
+})
+
+// Deleting any id from the database
+app.delete('/blogs/:id', (req, res) => {
+    const id = req.params.id;
+
+    Blog.findByIdAndDelete(id)
+    .then(result => {
+        res.json({ redirect: '/blogs' })
+    })
+    .catch(err => {
         console.log(err);
     })
 })
